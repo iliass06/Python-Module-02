@@ -1,42 +1,51 @@
 def garden_operations() -> None:
+    print("\nTesting ValueError...")
     try:
-        print("\nTesting ValueError...")
         int("abc")
     except ValueError:
         print("Caught ValueError: invalid literal for int()")
-    
+
+    print("\nTesting ZeroDivisionError...")
     try:
-        print("\nTesting ZeroDivisionError...")
         1 / 0
     except ZeroDivisionError:
         print("Caught ZeroDivisionError: division by zero")
+
+    print("\nTesting FileNotFoundError...")
     try:
-        print("\nTesting FileNotFoundError...")
-        f = open("missing.txt", "r")
+        file = open("missing.txt", "r")
+        if file:
+            file.close()
     except FileNotFoundError:
         print("Caught FileNotFoundError: No such file 'missing.txt'")
-        
+
+    print("\nTesting KeyError...")
     try:
-        print("\nTesting KeyError...")
-        dict = {'key': 5}
-        dict['missing_plant']
+        k = "missing_plant"
+        garden = {"tree": 5}
+        garden[k]
     except KeyError:
-        print("Caught KeyError: 'missing\_plant'")
+        print(f"Caught KeyError: '{k}'")
+
+    print("\nTesting multiple errors together...")
     try:
-        print("\nTesting multiple errors together...")
-        1 / 0
         int("abc")
-    except (ValueError, ZeroDivisionError):
+        1 / 0
+        garden = {"tree": 5}
+        garden["missing_plant"]
+        open("missing.txt", "r")
+    except (ValueError, ZeroDivisionError, KeyError, FileNotFoundError):
         print("Caught an error, but program continues!")
+
 
 def test_error_types() -> None:
     print("=== Garden Error Types Demo ===")
     garden_operations()
     print("\nAll error types tested successfully!")
 
+
 if __name__ == "__main__":
-    test_error_types()
-    
-    
-    
-        
+    try:
+        test_error_types()
+    except Exception as e:
+        print(f"Error: {e}")
